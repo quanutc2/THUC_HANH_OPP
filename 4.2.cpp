@@ -1,7 +1,5 @@
-// Nguyen Minh Quan 6151071087
 #include <iostream>
 using namespace std;
-
 
 class Fraction
 {
@@ -13,7 +11,7 @@ class Fraction
         void input();
         void display();
         void compact();
-        Fraction operator+(Fraction f);
+        bool operator>(Fraction f);
         Fraction operator=(Fraction f);
 };
 Fraction::Fraction()
@@ -28,11 +26,11 @@ Fraction::Fraction(float a, float b)
 }
 void Fraction::input()
 {
-    cout << "\nNhap tu: " <<endl; cin >> a;
+    cout <<endl<< Enter numerator: " <<endl; cin >> a;
     do{
-        cout << "\nNhap mau: "<<endl; cin >> b;
+        cout << "\nEnter demominator: "<<endl; cin >> b;
         if(b == 0)
-            cout<<"Mau phai khac 0!!!"<<endl;
+            cout<<"Demominator must not equal 0!"<<endl;
     }while(b == 0);
 }
 void Fraction::display()
@@ -53,9 +51,11 @@ void Fraction::compact()
     a = a / greatest_common_divisor;
     b = b / greatest_common_divisor; 
 }
-Fraction Fraction::operator+(Fraction f)
+bool Fraction::operator>(Fraction f)
 {
-    return Fraction((this->a * f.b) + (this->b * f.a), this->b * f.b);
+    float gt1 = this->a / this->b;
+    float gt2 = f.a / f.b;
+    return (gt1>gt2)?true:false;
 }
 Fraction Fraction::operator=(Fraction f)
 {
@@ -63,33 +63,10 @@ Fraction Fraction::operator=(Fraction f)
     this->b = f.b;
     return *this;
 }
-int main()
-{ 
-    int n, n2;
-    int fl[n2];
-    input2(fl, n2);
-    display2(fl, n2);
-    Fraction *frac = new Fraction[n];
-    Fraction t;
-    cout<<"Enter n Fraction number: "<<endl;
-    cin>>n;
-    for(int i=0; i<n; i++)
-    {
-        cout<<"Enter frac "<<i+1<<endl;
-        frac[i].input();
-        t = t + frac[i];
-    }
-    cout<<"Fraction sum is: "<<endl;
-    t.display();
-    Fraction a(4,5), b(5,4);
-    cout<<"Assigned: "<<endl;
-    a = b;
-    a.display();
-    system("pause");
-}
-void input2(int fl[], int &n2)
+
+void input2(float fl[], int &n2)
 {
-    cout<<"Enter n int number: "<<endl;
+    cout<<"Enter number of float number: "<<endl;
     cin>>n2;
     for(int i=0; i<n2; i++)
     {
@@ -97,16 +74,41 @@ void input2(int fl[], int &n2)
         cin>>fl[i];
     }
 }
-void display2(int fl[], int n2)
+float findMax2(float fl[], int n2)
 {
-    float max = sum(fl, n2);
-    cout<<"Integer sum is: "<<max<<endl;
+    float max = fl[0];
+    for(int i=1; i<n2; i++)
+        if(fl[i] > max)
+            max = fl[i];
+    return max;
 }
-int sum(int fl[], int n2)
+void display2(float fl[], int n2)
 {
-    int sum = 0;
-    for(int i=0; i<n2; i++)
-        sum += fl[i];
-    return sum;
+    float max = findMax2(fl, n2);
+    cout<<"Max float number is: "<<max<<endl;
 }
-
+int main()
+{ 
+    int n, n2;
+    float fl[n2];
+    input2(fl, n2);
+    display2(fl, n2);
+    Fraction *frac = new Fraction[n];
+    cout<<"Enter number of Fraction number: "<<endl;
+    cin>>n;
+    for(int i=0; i<n; i++)
+    {
+        cout<<"Enter frac "<<i+1<<endl;
+        frac[i].input();
+    }
+    cout<<"Fraction max: "<<endl;
+    Fraction max = frac[0];
+    for(int i=1; i<n; i++)
+        if(frac[i]>max)
+            max = frac[i];
+    max.display();
+    Fraction a(4,5), b(5,4);
+    cout<<"Assigned: "<<endl;
+    a = b;
+    a.display();
+}
